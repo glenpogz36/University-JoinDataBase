@@ -16,8 +16,14 @@ namespace University.Controllers
         [HttpGet("/courses/{id}")]
         public ActionResult Show(int id)
         {
-            Course foundCourses = Course.Find(id);
-            return View(foundCourses);
+            Course foundCourse = Course.Find(id);
+            List<Student> students = foundCourse.GetStudents();
+            List<Student> allStudents = Student.GetAll();
+            Dictionary<string, object> myDic = new Dictionary<string, object> ();
+            myDic.Add("course", foundCourse);
+            myDic.Add("students", students);
+            myDic.Add("allStudents", allStudents);
+            return View(myDic);
         }
           [HttpGet("/courses/new")]
         public ActionResult New()
@@ -32,6 +38,14 @@ namespace University.Controllers
             newCourse.Save();
             List<Course> allcourses = Course.GetAll();
             return View("Index", allcourses);
+        }
+        [HttpPost("/courses/{id}")]
+        public ActionResult AddStudent(int id, int studentId)
+        {
+            Course foundCourse = Course.Find(id);
+            Student foundStudent = Student.Find(studentId);
+            foundCourse.AddStudent(foundStudent);
+            return RedirectToAction("Show");
         }
     }
 }

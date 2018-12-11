@@ -4,6 +4,25 @@
 
 <h1>Student details:</h1>
 
-<li>ID: @Model.GetId()</li>
-<li>name: @Model.GetName()</li>
-<li>date: @Model.GetEnrollmentDate()</li>
+<li>ID: @Model["student"].GetId()</li>
+<li>name: @Model["student"].GetName()</li>
+<li>date: @Model["student"].GetEnrollmentDate()</li>
+
+<h1>This student is enrolled in the following classes:</h1>
+@foreach(var course in Model["courses"])
+{
+    <li>@course.GetName()</li>
+}
+
+<p>Add an additional course to this student:</p>
+
+
+<form action="/students/@Model["student"].GetId()" method="post">
+    <select name="courseId" >
+            @foreach(var course in @Model["allCourses"])
+            {
+                <option class="dropdown-item"value=@course.GetId()>@course.GetName()</option>
+            }
+    </select>
+     <button class="btn btn-primary btn-lg" type="submit">Add</button>
+</form>

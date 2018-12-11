@@ -136,5 +136,36 @@ namespace University.Models
                 conn.Dispose();
             }
         }
+
+        public List<Course> GetCourses()
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT courses.* FROM students
+                JOIN courses_students ON (students.id = courses_students.student_id)
+                JOIN courses ON (courses_students.course_id = courses.id)
+                WHERE students.id = @studentId;";
+            MySqlParameter studentIdParameter = new MySqlParameter();
+            studentIdParameter.ParameterName = "@studentId";
+            studentIdParameter.Value = _id;
+            cmd.Parameters.Add(studentIdParameter);
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            List<Course> Courses = new List<Course>{};
+            while(rdr.Read())
+            {
+            int CourseId = rdr.GetInt32(0);
+            string CourseName = rdr.GetString(1);
+            string description = rdr.GetString(2);
+            Course newCourse = new Course(CourseName, description, CourseId);
+            Courses.Add(newCourse);
+            }
+            conn.Close();
+            if (conn != null)
+            {
+            conn.Dispose();
+            }
+            return Courses;
+            }
     }
 }

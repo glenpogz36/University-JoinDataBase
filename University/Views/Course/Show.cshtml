@@ -2,8 +2,27 @@
   Layout = "_Layout";
 }
 
-<h1>Student Course details:</h1>
+<h1>Course details:</h1>
 
-<li>ID: @Model.GetId()</li>
-<li>Course name: @Model.GetName()</li>
-<li>description: @Model.GetDescription()</li>
+<li>ID: @Model["course"].GetId()</li>
+<li>Course name: @Model["course"].GetName()</li>
+<li>description: @Model["course"].GetDescription()</li>
+
+<h1>This Course is assigned in the following students:</h1>
+@foreach(var student in Model["students"])
+{
+    <li>@student.GetName()</li>
+}
+
+<p>Add an additional student to this course:</p>
+
+
+<form action="/courses/@Model["course"].GetId()" method="post">
+    <select name="studentId" >
+            @foreach(var student in @Model["allStudents"])
+            {
+                <option class="dropdown-item"value=@student.GetId()>@student.GetName()</option>
+            }
+    </select>
+     <button class="btn btn-primary btn-lg" type="submit">Add</button>
+</form>
