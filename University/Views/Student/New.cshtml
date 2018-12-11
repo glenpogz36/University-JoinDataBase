@@ -1,0 +1,13 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Add a student</h1>
+
+<form action='/students' method='post'>
+  <label for='studentName'>name</label>
+  <input id='studentName' name='studentName' type='text'>
+  <label for='enrollmentDate'>enrollment Date</label>
+  <input id='enrollmentDate' name='enrollmentDate' type='date'>
+  <button class="btn btn-primary" type='submit'>Add student</button>
+</form>

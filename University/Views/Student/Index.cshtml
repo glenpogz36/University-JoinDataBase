@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Here are all the students:</h1>
+
+@foreach(var student in Model)
+{
+    <li><a href='/students/@student.GetId()'>@student.GetName()</li>
+}
+
+<hr>
+
+<a class="btn btn-info" href="/students/new">Add a student</a>
