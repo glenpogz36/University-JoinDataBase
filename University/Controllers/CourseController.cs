@@ -25,7 +25,8 @@ namespace University.Controllers
             myDic.Add("allStudents", allStudents);
             return View(myDic);
         }
-          [HttpGet("/courses/new")]
+
+        [HttpGet("/courses/new")]
         public ActionResult New()
         {
             return View();
@@ -39,12 +40,21 @@ namespace University.Controllers
             List<Course> allcourses = Course.GetAll();
             return View("Index", allcourses);
         }
+
         [HttpPost("/courses/{id}")]
         public ActionResult AddStudent(int id, int studentId)
         {
             Course foundCourse = Course.Find(id);
             Student foundStudent = Student.Find(studentId);
             foundCourse.AddStudent(foundStudent);
+            return RedirectToAction("Show");
+        }
+
+        [HttpPost("/courses/{id}/delete")]
+        public ActionResult DeleteStudent(int id, int studentId)
+        {
+            Course foundCourse = Course.Find(id);
+            foundCourse.DeleteStudent(studentId);
             return RedirectToAction("Show");
         }
     }

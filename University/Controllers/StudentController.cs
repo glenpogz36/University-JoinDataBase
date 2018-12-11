@@ -49,6 +49,12 @@ namespace University.Controllers
             foundStudent.AddCourse(foundCourse);
             return RedirectToAction("Show");
         }
-        
+        [HttpPost("/students/{id}/delete")]
+        public ActionResult DeleteCourse(int id, int courseId)
+        {
+             Student foundStudent = Student.Find(id);
+             foundStudent.DeleteCourse(courseId);
+            return RedirectToAction("Show");
+        }
     }
 }

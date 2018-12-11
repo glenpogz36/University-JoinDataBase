@@ -167,6 +167,39 @@ namespace University.Models
         }
         return students;
     }
-    
+
+     public void DeleteStudent(int studentId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM courses_students WHERE student_id = @studentId;";
+
+      MySqlParameter coursesParameter = new MySqlParameter();
+      coursesParameter.ParameterName = "@studentId";
+      coursesParameter.Value = studentId;
+      cmd.Parameters.Add(coursesParameter);
+
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public static void DeleteAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM course;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+
+    }
     }
 }
