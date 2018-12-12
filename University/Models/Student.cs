@@ -173,11 +173,16 @@ namespace University.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM courses_students WHERE course_id = @courseId;";
+            cmd.CommandText = @"DELETE FROM courses_students WHERE (course_id, student_id) = (@courseId, @studentId);";
+
+            MySqlParameter courseParameter = new MySqlParameter();
+            courseParameter.ParameterName = "@courseId";
+            courseParameter.Value = courseId;
+            cmd.Parameters.Add(courseParameter);
 
             MySqlParameter studentParameter = new MySqlParameter();
-            studentParameter.ParameterName = "@courseId";
-            studentParameter.Value = courseId;
+            studentParameter.ParameterName = "@studentId";
+            studentParameter.Value = this.GetId();
             cmd.Parameters.Add(studentParameter);
 
             cmd.ExecuteNonQuery();
